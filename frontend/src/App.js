@@ -15,11 +15,9 @@ class App extends Component {
   }
 
   render() {
-    const complete = true;
-    
     return (
       <div className="App">
-        <Instructions complete={complete}/>
+        <Instructions complete={true}/>
         {this.state.shows.map(x => (
           <Show id={x.id} name={x.name} episodes_seen={x.episodes_seen} />
         ))}
