@@ -63,8 +63,20 @@ def get_all_shows():
 @app.route("/shows", methods=['POST'])
 def post_show():
     show_data = request.get_json()
+
+    message = "The show is missing required parameter(s): "
+    is_missing_parameters = False
+    required_parameters = ["episodes_seen", "name"]
+
+    for parameter in required_parameters:
+        if parameter not in show_data:
+            message = message + parameter + " "
+            is_missing_parameters = True
+    if is_missing_parameters:
+        return create_response(status=422, message=message)
+
     show = db.create('shows', show_data)
-    return create_response({"shows": show}, 201)
+    return create_response({"shows": show}, status=201)
 
 @app.route("/shows/<id>", methods=['GET'])
 def get_show_by_id(id):
