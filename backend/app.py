@@ -55,6 +55,13 @@ def mirror(name):
 def get_all_shows():
     return create_response({"shows": db.get('shows')})
 
+@app.route("/shows/<id>", methods=['GET'])
+def get_show_by_id(id):
+    if db.getById('shows', int(id)) is None:
+        return create_response(status=404, message="No show with this id exists")
+    return create_response({"shows": db.getById('shows', int(id))})
+
+
 @app.route("/shows/<id>", methods=['DELETE'])
 def delete_show(id):
     if db.getById('shows', int(id)) is None:
