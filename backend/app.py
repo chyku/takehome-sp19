@@ -60,6 +60,12 @@ def get_all_shows():
         shows = [show for show in shows if show["episodes_seen"] >= minEpisodes]
     return create_response({"shows": shows})
 
+@app.route("/shows", methods=['POST'])
+def post_show():
+    show_data = request.get_json()
+    show = db.create('shows', show_data)
+    return create_response({"shows": show}, 201)
+
 @app.route("/shows/<id>", methods=['GET'])
 def get_show_by_id(id):
     if db.getById('shows', int(id)) is None:
