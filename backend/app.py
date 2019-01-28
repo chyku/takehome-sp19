@@ -96,6 +96,20 @@ def post_show():
     return create_response({"shows": show}, status=201)
 
 
+@app.route("/shows/<id>", methods=['PUT'])
+def put_show(id):
+    update_values = request.get_json()
+
+    valid_parameters = ["episodes_seen", "name"]
+    same_parameters = set(valid_parameters).intersection(update_values.keys())
+    update_values = { parameter: update_values[parameter] for parameter in same_parameters }
+
+    show = db.updateById('shows', int(id), update_values)
+    
+    if show is None:
+        return create_response(status=404, message="No show with this id exists")
+    return create_response({"shows": show}, status=201)
+
 """
 ~~~~~~~~~~~~ END API ~~~~~~~~~~~~
 """
